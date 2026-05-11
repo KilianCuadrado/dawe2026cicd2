@@ -1,3 +1,4 @@
+
 name: Desplegament a Docker Hub
 
 on:
@@ -32,8 +33,9 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }} || true
-            cd ~/taskmanager || exit 0
+            mkdir -p ~/taskmanager
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
+            cd ~/taskmanager
             docker compose up -d
 
   deploy:
