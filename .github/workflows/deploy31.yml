@@ -1,4 +1,3 @@
-
 name: Desplegament a Docker Hub
 
 on:
@@ -26,20 +25,6 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
 
-      - name: Notify server (pull & restart)
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            mkdir -p ~/taskmanager
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
-            cd ~/taskmanager
-            export IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
-            export PORT=80
-            docker compose up -d
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -63,6 +48,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/taskmanager
+            # Aquí añadimos la variable que faltaba:
+            export IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
             export PORT=80
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
+            
+            docker pull $IMAGE
             docker compose up -d
