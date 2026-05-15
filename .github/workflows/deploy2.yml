@@ -28,5 +28,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/taskmanager
-            export PORT=80 
-            docker compose up -d --build
+            export IMAGE=${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
+            export PORT=80
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
+            docker compose up -d
