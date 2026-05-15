@@ -36,7 +36,7 @@ jobs:
             mkdir -p ~/taskmanager
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
             cd ~/taskmanager
-            docker-compose up -d
+            docker compose up -d
 
   deploy:
     needs: build
@@ -63,4 +63,4 @@ jobs:
             cd ~/taskmanager
             export PORT=80
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/taskmanager:${{ github.sha }}
-            docker-compose up -d
+            docker compose up -d
