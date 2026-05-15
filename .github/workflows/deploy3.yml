@@ -35,7 +35,7 @@ jobs:
           script: |
             docker pull ${{ secrets.REGISTRY_URL }}/taskmanager:${{ github.sha }} || true
             cd ~/taskmanager || exit 0
-            docker compose up -d
+            docker-compose up -d
 
   deploy:
     needs: build
@@ -61,4 +61,4 @@ jobs:
           script: |
             cd ~/taskmanager
             export PORT=80 
-            docker compose up -d --build
+            docker-compose up -d --build
